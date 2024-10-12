@@ -104,7 +104,7 @@ public class ExceptionHandler  extends ResponseEntityExceptionHandler{
 		return handleExceptionInternal(e, bodyExceptionResponse, header, INTERNAL_SERVER_ERROR, request);
 	}
 
-	@org.springframework.web.bind.annotation.ExceptionHandler(NaoEncontradoException.class)
+	@org.springframework.web.bind.annotation.ExceptionHandler(NaoAutorizadoException.class)
 	public ResponseEntity<Object> handleNaoAutorizadoException(NaoAutorizadoException e, ServletWebRequest request) {
 		logger.warn(e.getMessage());
 		
