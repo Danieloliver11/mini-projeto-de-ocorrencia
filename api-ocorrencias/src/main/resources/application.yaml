@@ -1,7 +1,10 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /ocorrencia
 spring:
   application:
     name: ocorrencia
-
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: ${USER_BANCO:postgres}
@@ -10,7 +13,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: none 
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

@@ -2,7 +2,7 @@ package com.carbigdata.api_ocorrencia.model.enumeration;
 
 import java.util.Objects;
 
-public enum StatusOcorrenciaEnum {
+public enum StatusOcorrenciaEnum  {
 	
 	ATIVO(1l),
 	FINALIZADO(2l);
