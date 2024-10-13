@@ -2,6 +2,7 @@ package com.carbigdata.api_ocorrencia.model.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
 
 import com.carbigdata.api_ocorrencia.model.entity.ClienteEntity;
 import com.carbigdata.api_ocorrencia.model.entity.OcorrenciaEntity;
@@ -19,5 +20,9 @@ public interface OcorrenciaMapper {
 	@Mapping(target = "cpf", expression = "java(ocorrenciaEntity.getCliente().getCpf())")
 	@Mapping(target = "endereco.locradouro", source =  "endereco.locradouro")
 	OcorrenciaVO converterEntidadeParaVO(OcorrenciaEntity ocorrenciaEntity);
+
+	default Page<OcorrenciaVO> converterEntityPageParaPageVo(Page<OcorrenciaEntity> ocorenciasPage){
+		return ocorenciasPage.map(this::converterEntidadeParaVO) ;
+	}
 
 }
