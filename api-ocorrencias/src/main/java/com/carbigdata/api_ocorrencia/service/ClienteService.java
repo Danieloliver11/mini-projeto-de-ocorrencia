@@ -10,6 +10,7 @@ import com.carbigdata.api_ocorrencia.model.vo.ClienteVO;
 import com.carbigdata.api_ocorrencia.repository.ClienteRepository;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -82,6 +83,12 @@ public class ClienteService {
 		
 		clienteRepository.deleteById(clienteEntity.getId());
 
+		
+	}
+
+	public ClienteEntity recuperarClientePorNomeCpf(String nome,String cpf) {
+		return clienteRepository.findByNomeAndCpf(nome,cpf).orElseThrow(() ->
+		new NaoEncontradoException("O cidadão não foi encontrado pelo nome e cpf enformado."));
 		
 	}
 

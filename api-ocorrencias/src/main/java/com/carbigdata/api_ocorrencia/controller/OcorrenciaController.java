@@ -1,8 +1,16 @@
 package com.carbigdata.api_ocorrencia.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.carbigdata.api_ocorrencia.model.vo.OcorrenciaVO;
+import com.carbigdata.api_ocorrencia.service.OcorrenciaService;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -10,8 +18,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OcorrenciaController {
 	
-	//TODO Criar um endpoint para realizar cadastro de ocorrências onde deverão ser enviadas
-	//as informações de endereço da ocorrência, nome e CPF do cliente envolvido junto à
-//	evidência em imagem.
+	private final OcorrenciaService ocorrenciaService;
+	
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED) //TODO IMAGEM
+	public OcorrenciaVO salvarOcorrencia(@Valid @RequestBody OcorrenciaVO ocorrencia) {
+		return ocorrenciaService.salvarOcorrencia(ocorrencia);
+	}
 
 }

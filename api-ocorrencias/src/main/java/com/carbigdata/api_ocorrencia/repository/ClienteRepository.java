@@ -17,4 +17,6 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Long>{
 
 	Optional<ClienteEntity> findByCpf(@Valid String cpf);
 
+	Optional<ClienteEntity> findByNomeAndCpf(String nome, String cpf);
+
 }

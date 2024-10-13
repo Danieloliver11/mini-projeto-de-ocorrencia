@@ -9,9 +9,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.carbigdata.api_ocorrencia.exceptions.DadosJaCadastradosException;
@@ -33,11 +36,13 @@ public class ExceptionHandler  extends ResponseEntityExceptionHandler{
 	private static final String TITLE_DADOS_JA_CADASTRADOS = "Dados já cadastrados";
 	private static final String TITLE_ERRO_SERVIDOR = "Erro no servidor";
 	private static final String TYPE_VALIDACAO_AUTORIZACAO = "Não foi autorizado";
+	private static final String ERRO_VALIDACAO = "Erro de validação";
 
 	private static final String TYPE_VALIDACAO_REGRA_NEGOCIO = "Validação de regras de negócio";
 	private static final String TYPE_VALIDACAO_PARAMETROS = "Validação de Parâmetros";
 	private static final String TYPE_ERRO_INESPERADO = "Erro inesperado";
 	private static final String TITLE_NAO_AUTORIZADO = "usuário não esta autorizado no sistema";
+	private static final String TITLE_VALIDACAO_PARAMETRO = "Validação de Parâmetros";
 	
 	@org.springframework.web.bind.annotation.ExceptionHandler(MsgException.class)
 	public ResponseEntity<Object> handleDadosJaCadastradosException(MsgException e, ServletWebRequest request) {
@@ -116,7 +121,22 @@ public class ExceptionHandler  extends ResponseEntityExceptionHandler{
 
 		return handleExceptionInternal(e, bodyExceptionResponse, header, UNAUTHORIZED, request);
 	}
+	
+	 @Override
+	    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, 
+	    		HttpStatusCode status, WebRequest request) {
+	        
+	        List<String> errors = ex.getBindingResult().getFieldErrors().stream()
+	                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+	                .toList();
 
+	        ExceptionResponseVO bodyExceptionResponse = criarExceptionResponse(ERRO_VALIDACAO,
+	        		TITLE_VALIDACAO_PARAMETRO,
+	                errors,
+	                request.getDescription(false));
+
+	        return handleExceptionInternal(ex, bodyExceptionResponse, headers, BAD_REQUEST, request);
+	    }
 	
 	private ExceptionResponseVO criarExceptionResponse(String title, String type, List<String> detail,
 			String instance) {
