@@ -50,6 +50,9 @@ public class ClienteEntity implements Serializable {
 
 	@Column(name = "nmo_cpf", length = 11)
 	private String cpf;
+	
+	@Column(name = "senha", length = 20)
+	private String senha;
 
 	@Column(name = "dt_criacao")
 	private LocalDate dataCriacao;

@@ -23,6 +23,8 @@ import com.carbigdata.api_ocorrencia.exceptions.NaoAutorizadoException;
 import com.carbigdata.api_ocorrencia.exceptions.NaoEncontradoException;
 import com.carbigdata.api_ocorrencia.exceptions.ParametroInvalidoException;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 
 @ControllerAdvice
 public class ExceptionHandler  extends ResponseEntityExceptionHandler{
@@ -137,7 +139,8 @@ public class ExceptionHandler  extends ResponseEntityExceptionHandler{
 
 	        return handleExceptionInternal(ex, bodyExceptionResponse, headers, BAD_REQUEST, request);
 	    }
-	
+	 
+
 	private ExceptionResponseVO criarExceptionResponse(String title, String type, List<String> detail,
 			String instance) {
 

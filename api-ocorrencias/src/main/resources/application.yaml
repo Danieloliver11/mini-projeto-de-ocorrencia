@@ -2,6 +2,11 @@ server:
   port: 8080
   servlet:
     context-path: /ocorrencia
+
+jwt:
+  secret: ${SECRET_KEY:MyVeryLongAndSecureSecretKeyThatIsAtLeast64CharactersMyVeryLongAndSecureSecretKeyThatIsAtLeast64Characters}
+  expiration: 30  # 30 minutos 
+
 spring:
   application:
     name: ocorrencia

@@ -8,9 +8,9 @@ import com.carbigdata.api_ocorrencia.model.entity.ClienteEntity;
 import com.carbigdata.api_ocorrencia.model.mapper.ClienteMapper;
 import com.carbigdata.api_ocorrencia.model.vo.ClienteVO;
 import com.carbigdata.api_ocorrencia.repository.ClienteRepository;
+import com.carbigdata.api_ocorrencia.security.AuthService;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -21,13 +21,16 @@ public class ClienteService {
 	
 	private final ClienteMapper clienteMapper;
 	
+	private final AuthService authService;
+	
 	
 	public ClienteVO cadastrarClient(@Valid ClienteVO clienteVO) {
 		
 		verificarCpfJaCadastrado(clienteVO);
-		
+				
 		ClienteEntity clienteEntity = clienteMapper.converterVOparaEntidade(clienteVO);
-		
+		clienteEntity.setSenha(authService.encoderPassword(clienteVO.senha()));
+
 		clienteRepository.save(clienteEntity);
 		
 		return clienteMapper.converterEntidadeparaVO(clienteEntity);
@@ -60,7 +63,7 @@ public class ClienteService {
 		return clienteMapper.converterEntidadeparaVO(clienteEntity);
 	}
 
-	private ClienteEntity recuperarCidadaoEntityPorCpf(String cpf) {
+	public ClienteEntity recuperarCidadaoEntityPorCpf(String cpf) {
 		ClienteEntity clienteEntity = clienteRepository.findByCpf(cpf).orElseThrow(
 				() -> new NaoEncontradoException("O cidadão não foi encontrado."));
 		return clienteEntity;
