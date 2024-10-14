@@ -3,8 +3,10 @@ package com.carbigdata.api_ocorrencia.service;
 import org.springframework.stereotype.Service;
 
 import com.carbigdata.api_ocorrencia.exceptions.DadosJaCadastradosException;
+import com.carbigdata.api_ocorrencia.exceptions.MsgException;
 import com.carbigdata.api_ocorrencia.exceptions.NaoEncontradoException;
 import com.carbigdata.api_ocorrencia.model.entity.ClienteEntity;
+import com.carbigdata.api_ocorrencia.model.enumeration.RoleEnum;
 import com.carbigdata.api_ocorrencia.model.mapper.ClienteMapper;
 import com.carbigdata.api_ocorrencia.model.vo.ClienteVO;
 import com.carbigdata.api_ocorrencia.repository.ClienteRepository;
@@ -30,6 +32,7 @@ public class ClienteService {
 				
 		ClienteEntity clienteEntity = clienteMapper.converterVOparaEntidade(clienteVO);
 		clienteEntity.setSenha(authService.encoderPassword(clienteVO.senha()));
+		clienteEntity.setRole(RoleEnum.ROLE_USUARIO);
 
 		clienteRepository.save(clienteEntity);
 		
@@ -37,9 +40,11 @@ public class ClienteService {
 	}
 	
 	public ClienteVO atualizarClient(@Valid ClienteVO clienteVO) {
-		
+				
 		ClienteEntity clienteEntity =  clienteRepository.findById(clienteVO.id()).orElseThrow(
 				() -> new NaoEncontradoException("O cidadão não foi encontrado."));
+		
+		verificarUsuarioLogadoParaAtualizar(clienteVO.id());
 
 		verificarCpfJaCadastradoParaAtualizar(clienteVO,clienteEntity);
 		
@@ -48,6 +53,16 @@ public class ClienteService {
 		clienteRepository.save(clienteEntity);
 
 		return clienteMapper.converterEntidadeparaVO(clienteEntity);
+	}
+
+	public void verificarUsuarioLogadoParaAtualizar(Long id) {
+		
+		ClienteEntity usuarioLogadoEntity = authService.recuperarUsuarioLogado();
+		
+		if(!authService.isAdmRoles() && !usuarioLogadoEntity.getId().equals(id)) {
+			throw new MsgException("O usuário logado não tem permissão para atualizar os dados de outro cliente, exceto se for um administrador.");
+		}
+		
 	}
 
 	private void verificarCpfJaCadastrado(@Valid ClienteVO clienteVO) {
@@ -81,8 +96,10 @@ public class ClienteService {
 	}
 
 	public void deletarCidadao(String cpf) {
-		
+				
 		ClienteEntity clienteEntity = recuperarCidadaoEntityPorCpf(cpf);
+		verificarUsuarioLogadoParaAtualizar(clienteEntity.getId());
+
 		
 		clienteRepository.deleteById(clienteEntity.getId());
 

@@ -19,11 +19,18 @@ public class OcorrenciaSpecification implements Specification<OcorrenciaEntity> 
 	
 	private final OcorrenciaFiltroVO filtro;
 	private final boolean asc;
+	private final boolean isAdm;
+	private final Long idUsuarioLogado;
+
 
 	
-	public OcorrenciaSpecification(OcorrenciaFiltroVO filtro, boolean asc){
+	public OcorrenciaSpecification(OcorrenciaFiltroVO filtro, boolean asc, boolean isAdm, Long idUsuarioLogado){
 		this.filtro = filtro;
 		this.asc = asc;
+		this.isAdm = isAdm;
+		this.idUsuarioLogado = idUsuarioLogado;
+
+		
 	}
 
 	@Override
@@ -38,6 +45,12 @@ public class OcorrenciaSpecification implements Specification<OcorrenciaEntity> 
 			query.orderBy(criteriaBuilder.desc(root.get("dataOcorrencia")),
 					criteriaBuilder.desc(root.get("endereco").get("nomeCidade")));
 
+		}
+		
+		if(!isAdm) {
+			Predicate condicao = criteriaBuilder.equal(root.get("cliente").get("id"), idUsuarioLogado);
+			condicoes.add(condicao);
+			
 		}
 
 		

@@ -11,13 +11,17 @@ public class CustomUserDetails implements UserDetails {
 	private String sub;
 	private String nome;
 	private String cpf;
+	private String role;
 
 
 
-	public CustomUserDetails(String sub, String nome, String cpf) {
+
+	public CustomUserDetails(String sub, String nome, String cpf, String role) {
         this.sub = sub;
-        this.sub = nome;
-        this.sub = cpf;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.role = role;
+
 
     }
 
@@ -62,6 +66,9 @@ public class CustomUserDetails implements UserDetails {
 
     public String getCpf() {
         return cpf;
+    }
+    public String getRole() {
+        return role;
     }
 
 }

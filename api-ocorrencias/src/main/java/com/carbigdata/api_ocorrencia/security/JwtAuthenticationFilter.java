@@ -7,6 +7,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.carbigdata.api_ocorrencia.exceptions.NaoAutorizadoException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -33,35 +35,39 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String sub = null;
         String nome = null;
         String cpf = null;
+        String role = null;
+
 
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwtToken = authHeader.substring(7);  // Remove "Bearer " do token
             try {
-                // Validar o token JWT e extrair o CPF
+                // Validar o token JWT 
                 Claims claims = Jwts.parserBuilder()
                     .setSigningKey(authService.getSigningKey())  // Obtenha a chave de assinatura
                     .build()
                     .parseClaimsJws(jwtToken)
                     .getBody();
                 
-                sub = claims.getSubject();  // CPF como "subject" do token
+                sub = claims.getSubject();  
                 nome = claims.get("nome", String.class); 
                 cpf = claims.get("cpf", String.class);
+                role = claims.get("role", String.class);
+
                 
                 } catch (Exception e) {
                 System.out.println("Token inválido: " + e.getMessage());
+
             }
         }
 
         // Se o token foi validado com sucesso, configure a autenticação no contexto de segurança
         if (sub != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-        	// Cria uma instância de UserDetails (ou use sua própria implementação)
-            CustomUserDetails userDetails = new CustomUserDetails(sub,nome,cpf);
+            CustomUserDetails userDetails = new CustomUserDetails(sub,nome,cpf,role);
             
             // Cria uma instância de Authentication
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities()); // Senha como null
+                    userDetails, null, userDetails.getAuthorities()); 
 
             // Configura a autenticação no contexto de segurança
             SecurityContextHolder.getContext().setAuthentication(authentication);        }

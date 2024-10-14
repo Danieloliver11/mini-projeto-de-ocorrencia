@@ -5,10 +5,12 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import org.springframework.stereotype.Service;
+import com.carbigdata.api_ocorrencia.model.enumeration.RoleEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -53,6 +55,10 @@ public class ClienteEntity implements Serializable {
 	
 	@Column(name = "senha", length = 20)
 	private String senha;
+	
+	@Column(name = "roles", nullable = false)
+	@Enumerated(EnumType.ORDINAL)
+	private RoleEnum role;
 
 	@Column(name = "dt_criacao")
 	private LocalDate dataCriacao;
