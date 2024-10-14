@@ -4,16 +4,16 @@ import java.util.Objects;
 
 public enum StatusOcorrenciaEnum  {
 	
-	ATIVO(1l),
-	FINALIZADO(2l);
+	ATIVO(1),
+	FINALIZADO(2);
 
-	StatusOcorrenciaEnum(Long id) {
+	StatusOcorrenciaEnum(int id) {
 		this.id =id;
 	}
 	
-	private final Long id;
+	private final int id;
 	
-	   public static StatusOcorrenciaEnum getCategoriaDocumento(Long valor) {
+	   public static StatusOcorrenciaEnum getCategoriaDocumento(int valor) {
 	        for (StatusOcorrenciaEnum tipo : values()) {
 	            if (Objects.equals(tipo.id, valor)) {
 	                return tipo;
