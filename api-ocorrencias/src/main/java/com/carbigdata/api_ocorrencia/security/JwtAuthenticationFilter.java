@@ -40,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwtToken = authHeader.substring(7);  // Remove "Bearer " do token
+            jwtToken = authHeader.replace("Bearer", ""); 
             try {
                 // Validar o token JWT 
                 Claims claims = Jwts.parserBuilder()
