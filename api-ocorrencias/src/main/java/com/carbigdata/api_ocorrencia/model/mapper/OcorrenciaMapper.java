@@ -21,7 +21,7 @@ public interface OcorrenciaMapper {
 	@Mapping(target = "nome", expression = "java(ocorrenciaEntity.getCliente().getNome())")
 	@Mapping(target = "cpf", expression = "java(ocorrenciaEntity.getCliente().getCpf())")
 	@Mapping(target = "endereco.locradouro", source = "ocorrenciaEntity.endereco.locradouro")
-	OcorrenciaVO converterEntidadeParaVO(OcorrenciaEntity ocorrenciaEntity, String nomeArquivos);
+	OcorrenciaVO converterEntidadeParaVO(OcorrenciaEntity ocorrenciaEntity);
 
 	default Page<OcorrenciaResponseVO> converterEntityPageParaPageVo(Page<OcorrenciaEntity> ocorenciasPage){
 		return ocorenciasPage.map(this::converterEntidadeParaOcorrenciaResponseVO) ;

@@ -2,6 +2,7 @@ package com.carbigdata.api_ocorrencia.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,11 +26,12 @@ public class SecurityConfig {
 	    @Bean
 	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	        http
-	            .csrf(csrf -> csrf.disable())  // Desativar CSRF para simplificação
+	            .csrf(csrf -> csrf.disable())
 	            .authorizeHttpRequests(authz -> authz
-	                .requestMatchers("/login").permitAll()  // Permitir acesso ao login
+	                .requestMatchers("/login").permitAll()
+	                .requestMatchers(HttpMethod.POST, "/clientes").permitAll()
 	                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-	                .anyRequest().authenticated()  // Qualquer outra requisição requer autenticação
+	                .anyRequest().authenticated() 
 	            )
 	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // Não cria sessões
 	            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // Adiciona o filtro de autenticação JWT

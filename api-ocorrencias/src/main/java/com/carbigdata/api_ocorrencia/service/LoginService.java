@@ -21,7 +21,10 @@ public class LoginService {
 	public String logarUsuario(@Valid LoginRequest login) {
 				
 		ClienteEntity cliente = clienteService.recuperarCidadaoEntityPorCpf(login.getCpf());
-		authService.verificarSenha(login.getPassword(), cliente.getSenha());
+		
+		if(!authService.verificarSenha(login.getPassword(), cliente.getSenha())) {
+			throw new NaoEncontradoException("Senha incorreta");
+		}
 		
 		
 		return authService.login(cliente);		

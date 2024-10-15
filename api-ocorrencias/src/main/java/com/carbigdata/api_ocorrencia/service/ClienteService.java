@@ -47,9 +47,11 @@ public class ClienteService {
 		verificarUsuarioLogadoParaAtualizar(clienteVO.id());
 
 		verificarCpfJaCadastradoParaAtualizar(clienteVO,clienteEntity);
-		
+				
 		clienteMapper.atualizarEntidadePeloVO(clienteEntity,clienteVO);
 		
+		clienteEntity.setSenha(authService.encoderPassword(clienteVO.senha()));
+
 		clienteRepository.save(clienteEntity);
 
 		return clienteMapper.converterEntidadeparaVO(clienteEntity);
@@ -74,6 +76,9 @@ public class ClienteService {
 	public ClienteVO recuperarPorCpf(String cpf) {
 		
 		ClienteEntity clienteEntity = recuperarCidadaoEntityPorCpf(cpf);
+
+		verificarUsuarioLogadoParaAtualizar(clienteEntity.getId());
+
 		
 		return clienteMapper.converterEntidadeparaVO(clienteEntity);
 	}

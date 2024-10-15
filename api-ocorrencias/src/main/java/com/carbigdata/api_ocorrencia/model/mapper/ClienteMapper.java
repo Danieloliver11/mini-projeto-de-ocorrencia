@@ -12,6 +12,7 @@ public interface ClienteMapper {
 
 	ClienteEntity converterVOparaEntidade( ClienteVO clienteVO);
 
+	@Mapping(target = "senha", ignore = true)
 	ClienteVO converterEntidadeparaVO(ClienteEntity clienteEntity);
 
 	@Mapping(target = "id", ignore = true)

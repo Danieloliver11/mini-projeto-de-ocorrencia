@@ -46,7 +46,7 @@ public class OcorrenciaService {
 		
 		ocorrenciaRepository.save(ocorrenciaEntity);
 				
-		return ocorrenciaMapper.converterEntidadeParaVO(ocorrenciaEntity,null);
+		return ocorrenciaMapper.converterEntidadeParaVO(ocorrenciaEntity);
 	}
 	
 	public OcorrenciaVO atualizarOcorrencia(OcorrenciaVO ocorrencia) {
@@ -65,12 +65,12 @@ public class OcorrenciaService {
 
 		ocorrenciaRepository.save(ocorrenciaEntity);
 
-		return ocorrenciaMapper.converterEntidadeParaVO(ocorrenciaEntity, null);//TODO
+		return ocorrenciaMapper.converterEntidadeParaVO(ocorrenciaEntity);
 	}
 
-	private void verificarOcorrenciaFinalizada(OcorrenciaEntity ocorrenciaEntity) {
+	public void verificarOcorrenciaFinalizada(OcorrenciaEntity ocorrenciaEntity) {
 		if(ocorrenciaEntity.getStatus().equals(StatusOcorrenciaEnum.FINALIZADO)) {
-			throw new MsgException("Não é possivel atualizar Ocorrencia já finalizada.");
+			throw new MsgException("Não é possível acessar as informações de uma ocorrência que já foi finalizada.");
 		}
 		
 	}
@@ -84,7 +84,7 @@ public class OcorrenciaService {
 		return ocorrenciaMapper.converterEntityPageParaPageVo(ocorenciasPage);
 	}
 	
-	private OcorrenciaEntity recuperarOcorrenciaPorId(Long id) {
+	public OcorrenciaEntity recuperarOcorrenciaPorId(Long id) {
 		return ocorrenciaRepository.findById(id).orElseThrow(() ->
 		new NaoEncontradoException("A Ocorrencia não foi encontrado pelo id informado."));
 	}
@@ -108,7 +108,7 @@ public void verificarUsuarioLogadoParaAtualizaOcorrenciar(Long idCliente) {
 		ClienteEntity usuarioLogadoEntity = authService.recuperarUsuarioLogado();
 		
 		if(!authService.isAdmRoles() && !usuarioLogadoEntity.getId().equals(idCliente)) {
-			throw new MsgException("O usuário logado não tem permissão para atualizar os dados de outro Ocorrencia, exceto se for um administrador.");
+			throw new MsgException("O usuário logado não tem permissão para atualizar os dados de outra Ocorrencia, exceto se for um administrador.");
 		}
 		
 	}
