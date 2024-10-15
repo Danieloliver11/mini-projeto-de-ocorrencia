@@ -1,6 +1,7 @@
 package com.carbigdata.api_ocorrencia.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,11 @@ public class FotoOrorrenciaService {
 	 	@Value("${minio.bucket}")
 	    private String bucket;
 	 	
+	 	@Value("${minio.filePath}")
+	    private String filePath;
+
+
+	 	
 	 	private final FotoOcorrenciaRepository fotoOcorrenciaRepository;
 	 	private final OcorrenciaRepository ocorrenciaRepository;
 	 	
@@ -35,7 +41,7 @@ public class FotoOrorrenciaService {
 		
 	
         String nomeArquivo = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        String path = "evidencias/" + nomeArquivo;
+        String path = filePath+"/" + nomeArquivo;
         
         OcorrenciaEntity ocorrenciaEntity = ocorrenciaRepository.findById(ocorrenciaId).orElseThrow(
         		() -> new NaoEncontradoException("Ocorrencia não encontrada"));
@@ -53,11 +59,35 @@ public class FotoOrorrenciaService {
 	
 		return nomeArquivo;
 	}
-
+	
+	public String uploadsEvidencias(List<MultipartFile> files, Long ocorrenciaId) {
+	    StringBuilder uploadedFileNames = new StringBuilder();
+	
+	    for (MultipartFile file : files) {
+	        // Chama o método de upload para cada arquivo
+	        String uploadedFileName = uploadEvidencia(file, ocorrenciaId);
+	        uploadedFileNames.append(uploadedFileName).append(", ");
+	    }
+	    return uploadedFileNames.toString();
+	}
+	
 	public ResponseEntity<Resource> downloadEvidencia(String fileName) {
 		
 		
-		return arquivoService.download(fileName,bucket);
+		return arquivoService.download(fileName,bucket,filePath);
 	}
+    @Transactional
+	public void deleteArquivo(String fileName) {
+		
+    	FotoOcorrenciaEntity fotoOcorrenciaEntity = fotoOcorrenciaRepository.findByDiscHash(fileName).orElseThrow(()->
+    	new NaoEncontradoException("Não foi encontrado nenhuma foto da ocorrência"));
+    	String pathBucket = fotoOcorrenciaEntity.getPathBucket();
+		fotoOcorrenciaRepository.deleteByDiscHash(fileName);
+		
+		arquivoService.deleteArquivo(pathBucket,bucket);
+		
+	}
+
+
 
 }

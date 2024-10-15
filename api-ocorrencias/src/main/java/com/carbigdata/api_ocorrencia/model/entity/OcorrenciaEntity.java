@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 import com.carbigdata.api_ocorrencia.model.enumeration.StatusOcorrenciaEnum;
 
@@ -18,6 +19,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -62,6 +64,9 @@ public class OcorrenciaEntity implements Serializable {
 	@Column(name = "sta_ocorrencia", nullable = false)
 	@Enumerated(EnumType.ORDINAL)
 	private StatusOcorrenciaEnum status;
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "ocorrencia")
+	List<FotoOcorrenciaEntity> arquivos;
 	
 	@PrePersist
 	private void onCreate() {

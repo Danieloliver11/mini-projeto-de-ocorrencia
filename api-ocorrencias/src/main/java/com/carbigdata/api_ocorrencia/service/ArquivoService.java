@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import io.minio.errors.ErrorResponseException;
 import io.minio.errors.InsufficientDataException;
 import io.minio.errors.InternalException;
@@ -58,37 +59,48 @@ public class ArquivoService {
 		
 	}
 
-	public ResponseEntity<Resource> download(String fileName, String bucket)  {
+	public ResponseEntity<Resource> download(String fileName, String bucket, String filePath)  {
 		 try {
-	            // Faz o download do arquivo do MinIO
 	            InputStream stream = null;
 				
 	            try {
 					stream = minioClient.getObject(GetObjectArgs.builder()
 					    .bucket(bucket)
-					    .object("evidencias/" + fileName)
+					    .object(filePath+"/" + fileName)
 					    .build());
 					
 				} catch (InvalidKeyException | NoSuchAlgorithmException | IllegalArgumentException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 	            InputStreamResource resource = new InputStreamResource(stream);
 
-	            // Retorna a resposta com o Resource
 	            return ResponseEntity.ok()
 	                .contentType(MediaType.APPLICATION_OCTET_STREAM)
 	                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
 	                .body(resource);
 	        } catch (MinioException e) {
-	            // Erro ao acessar o MinIO
+				e.printStackTrace();
 	            return ResponseEntity.status(500).body(null);
 	        } catch (IOException e) {
-	            // Erro ao ler o InputStream
+				e.printStackTrace();
 	            return ResponseEntity.status(500).body(null);
 	        }
 	    }
+
+	public void deleteArquivo(String fileName, String bucket) {
+		
+		try {
+            minioClient.removeObject(
+                RemoveObjectArgs.builder()
+                    .bucket(bucket)
+                    .object(fileName)
+                    .build());
+        } catch (MinioException | InvalidKeyException | NoSuchAlgorithmException | IllegalArgumentException | IOException e) {
+        	e.printStackTrace();       
+        	}
+		
+	}
 	
 
 }

@@ -23,6 +23,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  jackson:
+    default-property-inclusion: NON_NULL
 
 jwt:
   secret: ${SECRET_KEY:MyVeryLongAndSecureSecretKeyThatIsAtLeast64CharactersMyVeryLongAndSecureSecretKeyThatIsAtLeast64Characters}
@@ -33,3 +35,4 @@ minio:
   accessKey: ${ACCESS_KEY_MINIO:minioadmin}
   secretKey: ${SECRET_KEY_MINIO:minioadmin}
   bucket: ${BUCKEY:ocorrencias-carbigdata}
+  filePath: ${FILE_PATH:evidencias}

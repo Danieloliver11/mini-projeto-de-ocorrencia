@@ -21,9 +21,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.EqualsAndHashCode.Include;
+import lombok.Getter;
 
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -41,7 +45,7 @@ public class FotoOcorrenciaEntity implements Serializable {
 	private Long id;
 
 	@JoinColumn(name = "cod_ocorrencia", nullable = false)
-	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
 	private OcorrenciaEntity ocorrencia;
 
 	@Column(name = "disc_path_bucket", length = 255, nullable = false)

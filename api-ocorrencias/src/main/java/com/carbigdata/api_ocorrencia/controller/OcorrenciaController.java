@@ -29,12 +29,12 @@ public class OcorrenciaController {
 	private final OcorrenciaService ocorrenciaService;
 	
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED) //TODO IMAGEM
+	@ResponseStatus(HttpStatus.CREATED) 
 	public OcorrenciaVO salvarOcorrencia(@Valid @RequestBody OcorrenciaVO ocorrencia) {
 		return ocorrenciaService.salvarOcorrencia(ocorrencia);
 	}
 	
-	@PutMapping //TODO atualizar IMAGEM 
+	@PutMapping 
 	public OcorrenciaVO atualizarOcorrencia(@Valid @RequestBody OcorrenciaVO ocorrencia) {
 		return ocorrenciaService.atualizarOcorrencia(ocorrencia);
 	}

@@ -3,6 +3,7 @@ package com.carbigdata.api_ocorrencia.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.carbigdata.api_ocorrencia.exceptions.MsgException;
 import com.carbigdata.api_ocorrencia.exceptions.NaoEncontradoException;
@@ -35,6 +36,7 @@ public class OcorrenciaService {
 	
 	private final OcorrenciaRepository ocorrenciaRepository;
 	
+	@Transactional
 	public OcorrenciaVO salvarOcorrencia(OcorrenciaVO ocorrencia) {
 
 		ClienteEntity cliente = clienteService
@@ -43,8 +45,8 @@ public class OcorrenciaService {
 		OcorrenciaEntity ocorrenciaEntity = ocorrenciaMapper.converterVOparaEntidade(ocorrencia, cliente, StatusOcorrenciaEnum.ATIVO);
 		
 		ocorrenciaRepository.save(ocorrenciaEntity);
-		
-		return ocorrenciaMapper.converterEntidadeParaVO(ocorrenciaEntity);
+				
+		return ocorrenciaMapper.converterEntidadeParaVO(ocorrenciaEntity,null);
 	}
 	
 	public OcorrenciaVO atualizarOcorrencia(OcorrenciaVO ocorrencia) {
@@ -63,7 +65,7 @@ public class OcorrenciaService {
 
 		ocorrenciaRepository.save(ocorrenciaEntity);
 
-		return ocorrenciaMapper.converterEntidadeParaVO(ocorrenciaEntity);
+		return ocorrenciaMapper.converterEntidadeParaVO(ocorrenciaEntity, null);//TODO
 	}
 
 	private void verificarOcorrenciaFinalizada(OcorrenciaEntity ocorrenciaEntity) {
@@ -76,7 +78,7 @@ public class OcorrenciaService {
 	public Page<OcorrenciaResponseVO> filtrarOcorrencias(OcorrenciaFiltroVO filtro, boolean asc, Pageable pageable) {
 		
 		ClienteEntity usuarioLogado = authService.recuperarUsuarioLogado();
-		
+
 		Page<OcorrenciaEntity> ocorenciasPage = ocorrenciaRepository.findAll(new OcorrenciaSpecification(filtro,asc,authService.isAdmRoles(),usuarioLogado.getId()),pageable);
 		
 		return ocorrenciaMapper.converterEntityPageParaPageVo(ocorenciasPage);
