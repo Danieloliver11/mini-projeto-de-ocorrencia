@@ -2,23 +2,34 @@ server:
   port: 8080
   servlet:
     context-path: /ocorrencia
-
-jwt:
-  secret: ${SECRET_KEY:MyVeryLongAndSecureSecretKeyThatIsAtLeast64CharactersMyVeryLongAndSecureSecretKeyThatIsAtLeast64Characters}
-  expiration: 30  # 30 minutos 
+  tomcat:
+    max-swallow-size: -1  # Permite que o Tomcat aceite requisições grandes
 
 spring:
   application:
     name: ocorrencia
+  servlet:
+    multipart:
+      max-file-size: 10MB  # Define o tamanho máximo para arquivos individuais
+      max-request-size: 10MB  # Define o tamanho máximo para o pedido total
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: ${USER_BANCO:postgres}
     password: ${SENHA_BANCO:root}
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+jwt:
+  secret: ${SECRET_KEY:MyVeryLongAndSecureSecretKeyThatIsAtLeast64CharactersMyVeryLongAndSecureSecretKeyThatIsAtLeast64Characters}
+  expiration: 30  
+
+minio:
+  url: ${URL_MINIO:http://localhost:9000}
+  accessKey: ${ACCESS_KEY_MINIO:minioadmin}
+  secretKey: ${SECRET_KEY_MINIO:minioadmin}
+  bucket: ${BUCKEY:ocorrencias-carbigdata}

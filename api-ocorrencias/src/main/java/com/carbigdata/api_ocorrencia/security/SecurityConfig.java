@@ -28,6 +28,7 @@ public class SecurityConfig {
 	            .csrf(csrf -> csrf.disable())  // Desativar CSRF para simplificação
 	            .authorizeHttpRequests(authz -> authz
 	                .requestMatchers("/login").permitAll()  // Permitir acesso ao login
+	                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 	                .anyRequest().authenticated()  // Qualquer outra requisição requer autenticação
 	            )
 	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // Não cria sessões

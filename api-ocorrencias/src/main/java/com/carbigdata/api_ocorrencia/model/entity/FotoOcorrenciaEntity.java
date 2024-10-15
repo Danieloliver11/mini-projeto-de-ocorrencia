@@ -2,7 +2,10 @@ package com.carbigdata.api_ocorrencia.model.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -24,7 +28,7 @@ import lombok.EqualsAndHashCode.Include;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "ENDERECO")
+@Table(name = "FOTO_OCORRENCIA")
 public class FotoOcorrenciaEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -37,16 +41,21 @@ public class FotoOcorrenciaEntity implements Serializable {
 	private Long id;
 
 	@JoinColumn(name = "cod_ocorrencia", nullable = false)
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private OcorrenciaEntity ocorrencia;
 
 	@Column(name = "disc_path_bucket", length = 255, nullable = false)
 	private String pathBucket;
 
-	@Column(name = "disc_hash", length = 36, nullable = false)
+	@Column(name = "disc_hash", length = 150, nullable = false)
 	private String discHash;
 
 	@Column(name = "dt_criacao")
 	private LocalDate dataCriacao;
+	
+	@PrePersist
+	private void onCreate() {
+		dataCriacao = ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toLocalDate();
+	}
 
 }
