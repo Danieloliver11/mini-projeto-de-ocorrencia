@@ -22,7 +22,7 @@ services:
       - /Users/danielmacedodeoliveira/dev/projetosEstudos/volume_doker/postgres_data:/var/lib/postgresql/data
 
   app:
-    image: flyway-app
+    image: darkinho/flyway-app
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
@@ -33,7 +33,7 @@ services:
       - postgres
  
   app-ocorrencia:
-    image: api-ocorrencia:latest
+    image: darkinho/api-ocorrencia
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
