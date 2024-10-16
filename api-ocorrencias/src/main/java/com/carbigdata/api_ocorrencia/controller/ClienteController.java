@@ -26,6 +26,7 @@ public class ClienteController {
 	
 	
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED) 
 	public ClienteVO cadastrarClient(@Valid @RequestBody ClienteVO clienteVO) {
 		return clienteService.cadastrarClient(clienteVO);
 	}

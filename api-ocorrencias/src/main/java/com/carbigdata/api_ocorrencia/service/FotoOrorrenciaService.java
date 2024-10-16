@@ -69,6 +69,9 @@ public class FotoOrorrenciaService {
 			String uploadedFileName = uploadEvidencia(file, ocorrenciaId);
 			uploadedFileNames.append(uploadedFileName).append(", ");
 		}
+		
+	    uploadedFileNames.setLength(uploadedFileNames.length() - 2);
+
 		return uploadedFileNames.toString();
 	}
 
