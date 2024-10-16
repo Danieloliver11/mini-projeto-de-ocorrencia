@@ -33,7 +33,7 @@ services:
       - postgres
  
   app-ocorrencia:
-    image: darkinho/api-ocorrencia-dxd
+    image: darkinho/api-ocorrencia-dmo
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres

@@ -40,3 +40,6 @@ Credenciais do administrador:
 
 	•	CPF: 503.989.630-10
 	•	Senha: “root”
+
+
+Observação: Alguns testes ainda precisam ser concluídos. Fiz uma abordagem de cadastrar uma ocorrência inicialmente e, em seguida, realizar o upload dos arquivos em um endpoint separado. Um dos endpoints é responsável por fazer o upload de um único arquivo, enquanto outro permite o upload de múltiplos arquivos.
