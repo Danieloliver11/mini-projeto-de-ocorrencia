@@ -1,45 +1,24 @@
-**Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
+**Projeto de ocorrencias Carbigdata**
 
-When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
+Este projeto implementa uma API REST utilizando a linguagem de programação Java na versão 21, com o framework Spring Boot. Além disso, está integrado o Flyway Migrations para criar e popular as tabelas do banco de dados.
 
-*We recommend that you open this README in another tab as you perform the tasks below. You can [watch our video](https://youtu.be/0ocf7u76WSo) for a full demo of all the steps in this tutorial. Open the video in a new tab to avoid leaving Bitbucket.*
+O projeto inclui um arquivo Docker Compose, que contém comandos para executar um servidor de arquivos e imagens de objetos MinIO (Storage), previamente configurado em um container. Também está prevista a criação do PostgreSQL, que será armazenado em um servidor de banco de dados, igualmente configurado em um container.
 
----
 
-## Edit a file
+O primeiro passo é executar o comando no diretório onde está localizado o arquivo docker-compose.yml. Abra o terminal da sua máquina e execute o seguinte comando: "docker-compose up -d". Esse comando iniciará nossas aplicações em containers de forma local.
 
-You’ll start by editing this README file to learn how to edit a file in Bitbucket.
+Em seguida, acesse o seu navegador e digite o seguinte endereço: http://localhost:9090/login. Utilize as credenciais padrão:
 
-1. Click **Source** on the left side.
-2. Click the README.md link from the list of files.
-3. Click the **Edit** button.
-4. Delete the following text: *Delete this line to make a change to the README from Bitbucket.*
-5. After making your change, click **Commit** and then **Commit** again in the dialog. The commit page will open and you’ll see the change you just made.
-6. Go back to the **Source** page.
+	•	Usuário: minioadmin
+	•	Senha: minioadmin
 
----
+Após realizar o login, vá até o menu “Administrador” e clique em “Buckets” na parte esquerda da tela. Na parte superior direita, clique no botão “Create Bucket”. Insira o nome do seu bucket: “ocorrencias-carbigdata” (é importante que o nome seja exatamente este, pois será utilizado na API do back-end). Por fim, clique em “Create Bucket” para criar o novo bucket, onde armazenaremos nossos arquivos.
 
-## Create a file
+Por fim, acesse http://localhost:8080/ocorrencia/swagger-ui/index.html#/ para visualizar a documentação de todas as nossas APIs. As APIs implementam tem verificação via TOKEN JWT, portanto, é necessário criar um CLIENTE no endpoint POST /Clientes antes de realizar o login e gerar o token. Esse token será utilizado para acessar os demais endpoints do sistema.
 
-Next, you’ll add a new file to this repository.
+No banco de dados criado, há um único usuário administrador (ADM). Esse usuário tem permissão para visualizar qualquer ocorrência, mesmo que não seja de sua autoria, e é o único autorizado a finalizar ocorrências.
 
-1. Click the **New file** button at the top of the **Source** page.
-2. Give the file a filename of **contributors.txt**.
-3. Enter your name in the empty file space.
-4. Click **Commit** and then **Commit** again in the dialog.
-5. Go back to the **Source** page.
+Credenciais do administrador:
 
-Before you move on, go ahead and explore the repository. You've already seen the **Source** page, but check out the **Commits**, **Branches**, and **Settings** pages.
-
----
-
-## Clone a repository
-
-Use these steps to clone from SourceTree, our client for using the repository command-line free. Cloning allows you to work on your files locally. If you don't yet have SourceTree, [download and install first](https://www.sourcetreeapp.com/). If you prefer to clone from the command line, see [Clone a repository](https://confluence.atlassian.com/x/4whODQ).
-
-1. You’ll see the clone button under the **Source** heading. Click that button.
-2. Now click **Check out in SourceTree**. You may need to create a SourceTree account or log in.
-3. When you see the **Clone New** dialog in SourceTree, update the destination path and name if you’d like to and then click **Clone**.
-4. Open the directory you just created to see your repository’s files.
-
-Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+	•	CPF: 503.989.630-10
+	•	Senha: “root”
