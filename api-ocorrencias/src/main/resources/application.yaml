@@ -31,7 +31,7 @@ jwt:
   expiration: 30  
 
 minio:
-  url: ${URL_MINIO:http://localhost:9000}
+  url: ${URL_MINIO:http://localhost:9000} #url: ${URL_MINIO:http://minio:9000}
   accessKey: ${ACCESS_KEY_MINIO:minioadmin}
   secretKey: ${SECRET_KEY_MINIO:minioadmin}
   bucket: ${BUCKEY:ocorrencias-carbigdata}

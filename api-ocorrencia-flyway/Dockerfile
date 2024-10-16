@@ -1,9 +1,6 @@
 FROM openjdk:21-jdk-slim
-
-WORKDIR /app
-
-COPY target/api-ocorrencia-flyway-0.0.1-SNAPSHOT.jar /app/api-ocorrencia-flyway-0.0.1-SNAPSHOT.jar
-
-ENTRYPOINT ["java","-jar","/app/api-ocorrencia-flyway-0.0.1-SNAPSHOT.jar"]
-
-EXPOSE 8082
+ARG JAR_FILE=target/*.jar
+WORKDIR /
+COPY ${JAR_FILE} app.jar
+EXPOSE 8080
+ENTRYPOINT exec java ${JAVA_OPTS} -jar /app.jar
