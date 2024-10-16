@@ -1,27 +1,44 @@
 version: '3.7'
 
-# Settings and configurations that are common for all services
-x-minio-common: &minio-common
-  image: quay.io/minio/minio:latest
-  command: server --console-address ":9090" /mnt/data
-  ports:
-    - "9000:9000"
-    - "9090:9090"
-  healthcheck:
-    test: ["CMD", "curl", "-f", "http://localhost:9000"]
-    interval: 30s
-    timeout: 20s
-    retries: 3
-
 services:
   minio:
-    <<: *minio-common
-    container_name: minio
-    hostname: minio
+    image: quay.io/minio/minio:latest
+    command: server --console-address ":9090" /mnt/data
+    ports:
+      - "9000:9000"
+      - "9090:9090"
     volumes:
-      - type: bind
-        source: /Users/danielmacedodeoliveira/dev/projetosEstudos/minio_data
-        target: /mnt/data
-      - type: bind
-        source:  /Users/danielmacedodeoliveira/dev/projetosEstudos/minio_data/conf
-        target: /etc/conf/minio.env
+      - /Users/danielmacedodeoliveira/dev/projetosEstudos/volume_doker/minio_data:/mnt/data
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "root"
+      POSTGRES_DB: "postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - /Users/danielmacedodeoliveira/dev/projetosEstudos/volume_doker/postgres_data:/var/lib/postgresql/data
+
+  app:
+    image: flyway-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres
+ 
+  app-ocorrencia:
+    image: api-ocorrencia:latest
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8080:8080"
+    depends_on:
+      - app
