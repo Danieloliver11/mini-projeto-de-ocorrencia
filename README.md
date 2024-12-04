@@ -1,4 +1,4 @@
-**Projeto de ocorrencias Carbigdata**
+**Projeto de ocorrencias **
 
 Este projeto implementa uma API REST utilizando a linguagem de programação Java na versão 21, com o framework Spring Boot. Além disso, está integrado o Flyway Migrations para criar e popular as tabelas do banco de dados.
 
